@@ -1,0 +1,27 @@
+syntax = "proto3";
+package apppb;
+
+// 指定生成的 app.pb.go 文件的目录
+// protoc -I=bridge/pbs/apppb --go_out=. bridge/pbs/apppb/app.proto
+// --go_out=. 指定 go.mod 所在的目录
+option go_package = "bridge/pbs/apppb";
+
+message App {
+  string name = 1;
+
+  enum RuntimeType {
+    Golang = 0;
+    Python = 1;
+  }
+
+  RuntimeType runtime = 2;
+}
+
+message CreateAppResp {
+  message AppContainer {
+    App app = 1;
+  }
+
+  string error = 1;
+  AppContainer data = 2;
+}

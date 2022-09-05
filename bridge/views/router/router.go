@@ -25,6 +25,7 @@ func Load(middlewares ...gin.HandlerFunc) http.Handler {
 
 	{
 		api.GET("/app", appview.ListApp)
+		api.POST("/app", appview.CreateApp)
 	}
 
 	return r
