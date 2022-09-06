@@ -15,6 +15,11 @@ message App {
   }
 
   RuntimeType runtime = 2;
+  string image = 3;
+}
+
+message CreateAppReq {
+  App app = 1;
 }
 
 message CreateAppResp {

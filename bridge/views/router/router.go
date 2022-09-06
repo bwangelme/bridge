@@ -22,6 +22,7 @@ func Load(middlewares ...gin.HandlerFunc) http.Handler {
 
 	api := r.Group("/api")
 	api.Use(middleware.NoCache)
+	api.Use(middleware.HandlerHttpErr)
 
 	{
 		api.GET("/app", appview.ListApp)

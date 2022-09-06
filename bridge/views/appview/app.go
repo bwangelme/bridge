@@ -15,15 +15,17 @@ func ListApp(c *gin.Context) {
 }
 
 func CreateApp(c *gin.Context) {
-	app := &apppb.App{
-		Name:    "bridge",
-		Runtime: apppb.App_Golang,
+	req := &apppb.CreateAppReq{}
+	err := util.ReadJsonReq(req, c)
+	if err != nil {
+		util.AbortWithError(err, c)
+		return
 	}
 
 	resp := &apppb.CreateAppResp{
 		Error: "",
 		Data: &apppb.CreateAppResp_AppContainer{
-			App: app,
+			App: req.App,
 		},
 	}
 
