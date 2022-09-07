@@ -12,17 +12,30 @@ import (
 func ReadJsonReq(req proto.Message, c *gin.Context) error {
 	jsonData, err := c.GetRawData()
 	if err != nil {
-		return httperr.New400Error(errors.WithMessagef(err, "get raw data failed"))
+		e := errors.WithMessagef(err, "get raw data failed")
+		AbortWithCode(400, e, c)
+		return e
 	}
 	err = protojson.Unmarshal(jsonData, req)
 	if err != nil {
-		return httperr.New400Error(errors.WithMessagef(err, "unmarshal failed"))
+		e := errors.WithMessagef(err, "unmarshal failed")
+		AbortWithCode(400, e, c)
+		return e
 	}
 
 	return nil
 }
 
-func AbortWithError(err error, c *gin.Context) {
+func AbortWithCode(code int, err error, c *gin.Context) {
+	e := httperr.NewHTTPErr(code, err)
+	abortWithError(e, c)
+}
+
+func AbortWith500(err error, c *gin.Context) {
+	AbortWithCode(500, err, c)
+}
+
+func abortWithError(err error, c *gin.Context) {
 	// ignore the gin.parsedError
 	_ = c.Error(err)
 	c.Abort()
@@ -32,7 +45,7 @@ func WriteResp(resp proto.Message, c *gin.Context) {
 	res, err := protojson.MarshalOptions{EmitUnpopulated: true}.Marshal(resp)
 	if err != nil {
 		err := httperr.New500Error(errors.WithMessagef(err, "marshal json failed"))
-		AbortWithError(err, c)
+		abortWithError(err, c)
 		return
 	}
 

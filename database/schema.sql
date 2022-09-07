@@ -5,5 +5,6 @@ create table apps
     runtime varchar(20),
     image   varchar(100),
 
+    UNIQUE KEY `uni_name` (`name`),
     primary key (`id`)
 );

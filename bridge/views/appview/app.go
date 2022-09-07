@@ -1,6 +1,7 @@
 package appview
 
 import (
+	"bridge/bridge/model/appmodel"
 	"bridge/bridge/pbs/apppb"
 	"bridge/bridge/views/util"
 
@@ -18,14 +19,19 @@ func CreateApp(c *gin.Context) {
 	req := &apppb.CreateAppReq{}
 	err := util.ReadJsonReq(req, c)
 	if err != nil {
-		util.AbortWithError(err, c)
+		return
+	}
+
+	app, err := appmodel.AddApp(req.App)
+	if err != nil {
+		util.AbortWith500(err, c)
 		return
 	}
 
 	resp := &apppb.CreateAppResp{
 		Error: "",
 		Data: &apppb.CreateAppResp_AppContainer{
-			App: req.App,
+			App: app.ToPB(),
 		},
 	}
 
