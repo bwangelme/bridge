@@ -1,0 +1,33 @@
+syntax = "proto3";
+package apppb;
+
+option go_package = "bridge/pbs/apppb";
+
+import "bridge/pbs/apppb/app.proto";
+
+message CreateAppReq {
+  App app = 1;
+}
+
+message CreateAppResp {
+  message AppContainer {
+    App app = 1;
+  }
+
+  string error = 1;
+  AppContainer data = 2;
+}
+
+message ListAppReq {
+  int64 start = 1;
+  int64 limit = 2;
+}
+
+message ListAppResp {
+  message AppContainer {
+    repeated App apps = 1;
+  }
+
+  string error = 1;
+  AppContainer data = 2;
+}

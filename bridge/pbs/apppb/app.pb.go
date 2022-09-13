@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.28.1
 // 	protoc        v3.21.5
-// source: app.proto
+// source: bridge/pbs/apppb/app.proto
 
 package apppb
 
@@ -20,50 +20,51 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type App_RuntimeType int32
+// Note: 修改 RuntimeType 后，必须要一起修改 bridge/model/appmodel/ttypes.go 中 RuntimeType 的定义
+type RuntimeType int32
 
 const (
-	App_Golang App_RuntimeType = 0
-	App_Python App_RuntimeType = 1
+	RuntimeType_Golang RuntimeType = 0
+	RuntimeType_Python RuntimeType = 1
 )
 
-// Enum value maps for App_RuntimeType.
+// Enum value maps for RuntimeType.
 var (
-	App_RuntimeType_name = map[int32]string{
+	RuntimeType_name = map[int32]string{
 		0: "Golang",
 		1: "Python",
 	}
-	App_RuntimeType_value = map[string]int32{
+	RuntimeType_value = map[string]int32{
 		"Golang": 0,
 		"Python": 1,
 	}
 )
 
-func (x App_RuntimeType) Enum() *App_RuntimeType {
-	p := new(App_RuntimeType)
+func (x RuntimeType) Enum() *RuntimeType {
+	p := new(RuntimeType)
 	*p = x
 	return p
 }
 
-func (x App_RuntimeType) String() string {
+func (x RuntimeType) String() string {
 	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
 }
 
-func (App_RuntimeType) Descriptor() protoreflect.EnumDescriptor {
-	return file_app_proto_enumTypes[0].Descriptor()
+func (RuntimeType) Descriptor() protoreflect.EnumDescriptor {
+	return file_bridge_pbs_apppb_app_proto_enumTypes[0].Descriptor()
 }
 
-func (App_RuntimeType) Type() protoreflect.EnumType {
-	return &file_app_proto_enumTypes[0]
+func (RuntimeType) Type() protoreflect.EnumType {
+	return &file_bridge_pbs_apppb_app_proto_enumTypes[0]
 }
 
-func (x App_RuntimeType) Number() protoreflect.EnumNumber {
+func (x RuntimeType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Deprecated: Use App_RuntimeType.Descriptor instead.
-func (App_RuntimeType) EnumDescriptor() ([]byte, []int) {
-	return file_app_proto_rawDescGZIP(), []int{0, 0}
+// Deprecated: Use RuntimeType.Descriptor instead.
+func (RuntimeType) EnumDescriptor() ([]byte, []int) {
+	return file_bridge_pbs_apppb_app_proto_rawDescGZIP(), []int{0}
 }
 
 type App struct {
@@ -71,15 +72,15 @@ type App struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Name    string          `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Runtime App_RuntimeType `protobuf:"varint,2,opt,name=runtime,proto3,enum=apppb.App_RuntimeType" json:"runtime,omitempty"`
-	Image   string          `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
+	Name    string      `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Runtime RuntimeType `protobuf:"varint,2,opt,name=runtime,proto3,enum=apppb.RuntimeType" json:"runtime,omitempty"`
+	Image   string      `protobuf:"bytes,3,opt,name=image,proto3" json:"image,omitempty"`
 }
 
 func (x *App) Reset() {
 	*x = App{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_app_proto_msgTypes[0]
+		mi := &file_bridge_pbs_apppb_app_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -92,7 +93,7 @@ func (x *App) String() string {
 func (*App) ProtoMessage() {}
 
 func (x *App) ProtoReflect() protoreflect.Message {
-	mi := &file_app_proto_msgTypes[0]
+	mi := &file_bridge_pbs_apppb_app_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +106,7 @@ func (x *App) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use App.ProtoReflect.Descriptor instead.
 func (*App) Descriptor() ([]byte, []int) {
-	return file_app_proto_rawDescGZIP(), []int{0}
+	return file_bridge_pbs_apppb_app_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *App) GetName() string {
@@ -115,11 +116,11 @@ func (x *App) GetName() string {
 	return ""
 }
 
-func (x *App) GetRuntime() App_RuntimeType {
+func (x *App) GetRuntime() RuntimeType {
 	if x != nil {
 		return x.Runtime
 	}
-	return App_Golang
+	return RuntimeType_Golang
 }
 
 func (x *App) GetImage() string {
@@ -129,261 +130,59 @@ func (x *App) GetImage() string {
 	return ""
 }
 
-type CreateAppReq struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
+var File_bridge_pbs_apppb_app_proto protoreflect.FileDescriptor
 
-	App *App `protobuf:"bytes,1,opt,name=app,proto3" json:"app,omitempty"`
-}
-
-func (x *CreateAppReq) Reset() {
-	*x = CreateAppReq{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_app_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *CreateAppReq) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAppReq) ProtoMessage() {}
-
-func (x *CreateAppReq) ProtoReflect() protoreflect.Message {
-	mi := &file_app_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAppReq.ProtoReflect.Descriptor instead.
-func (*CreateAppReq) Descriptor() ([]byte, []int) {
-	return file_app_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateAppReq) GetApp() *App {
-	if x != nil {
-		return x.App
-	}
-	return nil
-}
-
-type CreateAppResp struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Error string                      `protobuf:"bytes,1,opt,name=error,proto3" json:"error,omitempty"`
-	Data  *CreateAppResp_AppContainer `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
-}
-
-func (x *CreateAppResp) Reset() {
-	*x = CreateAppResp{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_app_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *CreateAppResp) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAppResp) ProtoMessage() {}
-
-func (x *CreateAppResp) ProtoReflect() protoreflect.Message {
-	mi := &file_app_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAppResp.ProtoReflect.Descriptor instead.
-func (*CreateAppResp) Descriptor() ([]byte, []int) {
-	return file_app_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *CreateAppResp) GetError() string {
-	if x != nil {
-		return x.Error
-	}
-	return ""
-}
-
-func (x *CreateAppResp) GetData() *CreateAppResp_AppContainer {
-	if x != nil {
-		return x.Data
-	}
-	return nil
-}
-
-type CreateAppResp_AppContainer struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	App *App `protobuf:"bytes,1,opt,name=app,proto3" json:"app,omitempty"`
-}
-
-func (x *CreateAppResp_AppContainer) Reset() {
-	*x = CreateAppResp_AppContainer{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_app_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *CreateAppResp_AppContainer) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAppResp_AppContainer) ProtoMessage() {}
-
-func (x *CreateAppResp_AppContainer) ProtoReflect() protoreflect.Message {
-	mi := &file_app_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAppResp_AppContainer.ProtoReflect.Descriptor instead.
-func (*CreateAppResp_AppContainer) Descriptor() ([]byte, []int) {
-	return file_app_proto_rawDescGZIP(), []int{2, 0}
-}
-
-func (x *CreateAppResp_AppContainer) GetApp() *App {
-	if x != nil {
-		return x.App
-	}
-	return nil
-}
-
-var File_app_proto protoreflect.FileDescriptor
-
-var file_app_proto_rawDesc = []byte{
-	0x0a, 0x09, 0x61, 0x70, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x61, 0x70, 0x70,
-	0x70, 0x62, 0x22, 0x88, 0x01, 0x0a, 0x03, 0x41, 0x70, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
-	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x30,
+var file_bridge_pbs_apppb_app_proto_rawDesc = []byte{
+	0x0a, 0x1a, 0x62, 0x72, 0x69, 0x64, 0x67, 0x65, 0x2f, 0x70, 0x62, 0x73, 0x2f, 0x61, 0x70, 0x70,
+	0x70, 0x62, 0x2f, 0x61, 0x70, 0x70, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x05, 0x61, 0x70,
+	0x70, 0x70, 0x62, 0x22, 0x5d, 0x0a, 0x03, 0x41, 0x70, 0x70, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61,
+	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x2c,
 	0x0a, 0x07, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0e, 0x32,
-	0x16, 0x2e, 0x61, 0x70, 0x70, 0x70, 0x62, 0x2e, 0x41, 0x70, 0x70, 0x2e, 0x52, 0x75, 0x6e, 0x74,
-	0x69, 0x6d, 0x65, 0x54, 0x79, 0x70, 0x65, 0x52, 0x07, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65,
-	0x12, 0x14, 0x0a, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x22, 0x25, 0x0a, 0x0b, 0x52, 0x75, 0x6e, 0x74, 0x69, 0x6d,
-	0x65, 0x54, 0x79, 0x70, 0x65, 0x12, 0x0a, 0x0a, 0x06, 0x47, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x10,
-	0x00, 0x12, 0x0a, 0x0a, 0x06, 0x50, 0x79, 0x74, 0x68, 0x6f, 0x6e, 0x10, 0x01, 0x22, 0x2c, 0x0a,
-	0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x52, 0x65, 0x71, 0x12, 0x1c, 0x0a,
-	0x03, 0x61, 0x70, 0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x61, 0x70, 0x70,
-	0x70, 0x62, 0x2e, 0x41, 0x70, 0x70, 0x52, 0x03, 0x61, 0x70, 0x70, 0x22, 0x8a, 0x01, 0x0a, 0x0d,
-	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x70, 0x70, 0x52, 0x65, 0x73, 0x70, 0x12, 0x14, 0x0a,
-	0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x72,
-	0x72, 0x6f, 0x72, 0x12, 0x35, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x0b, 0x32, 0x21, 0x2e, 0x61, 0x70, 0x70, 0x70, 0x62, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
-	0x41, 0x70, 0x70, 0x52, 0x65, 0x73, 0x70, 0x2e, 0x41, 0x70, 0x70, 0x43, 0x6f, 0x6e, 0x74, 0x61,
-	0x69, 0x6e, 0x65, 0x72, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x1a, 0x2c, 0x0a, 0x0c, 0x41, 0x70,
-	0x70, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x65, 0x72, 0x12, 0x1c, 0x0a, 0x03, 0x61, 0x70,
-	0x70, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0a, 0x2e, 0x61, 0x70, 0x70, 0x70, 0x62, 0x2e,
-	0x41, 0x70, 0x70, 0x52, 0x03, 0x61, 0x70, 0x70, 0x42, 0x12, 0x5a, 0x10, 0x62, 0x72, 0x69, 0x64,
-	0x67, 0x65, 0x2f, 0x70, 0x62, 0x73, 0x2f, 0x61, 0x70, 0x70, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x12, 0x2e, 0x61, 0x70, 0x70, 0x70, 0x62, 0x2e, 0x52, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x54,
+	0x79, 0x70, 0x65, 0x52, 0x07, 0x72, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05,
+	0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6d, 0x61,
+	0x67, 0x65, 0x2a, 0x25, 0x0a, 0x0b, 0x52, 0x75, 0x6e, 0x74, 0x69, 0x6d, 0x65, 0x54, 0x79, 0x70,
+	0x65, 0x12, 0x0a, 0x0a, 0x06, 0x47, 0x6f, 0x6c, 0x61, 0x6e, 0x67, 0x10, 0x00, 0x12, 0x0a, 0x0a,
+	0x06, 0x50, 0x79, 0x74, 0x68, 0x6f, 0x6e, 0x10, 0x01, 0x42, 0x12, 0x5a, 0x10, 0x62, 0x72, 0x69,
+	0x64, 0x67, 0x65, 0x2f, 0x70, 0x62, 0x73, 0x2f, 0x61, 0x70, 0x70, 0x70, 0x62, 0x62, 0x06, 0x70,
+	0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
-	file_app_proto_rawDescOnce sync.Once
-	file_app_proto_rawDescData = file_app_proto_rawDesc
+	file_bridge_pbs_apppb_app_proto_rawDescOnce sync.Once
+	file_bridge_pbs_apppb_app_proto_rawDescData = file_bridge_pbs_apppb_app_proto_rawDesc
 )
 
-func file_app_proto_rawDescGZIP() []byte {
-	file_app_proto_rawDescOnce.Do(func() {
-		file_app_proto_rawDescData = protoimpl.X.CompressGZIP(file_app_proto_rawDescData)
+func file_bridge_pbs_apppb_app_proto_rawDescGZIP() []byte {
+	file_bridge_pbs_apppb_app_proto_rawDescOnce.Do(func() {
+		file_bridge_pbs_apppb_app_proto_rawDescData = protoimpl.X.CompressGZIP(file_bridge_pbs_apppb_app_proto_rawDescData)
 	})
-	return file_app_proto_rawDescData
+	return file_bridge_pbs_apppb_app_proto_rawDescData
 }
 
-var file_app_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_app_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
-var file_app_proto_goTypes = []interface{}{
-	(App_RuntimeType)(0),               // 0: apppb.App.RuntimeType
-	(*App)(nil),                        // 1: apppb.App
-	(*CreateAppReq)(nil),               // 2: apppb.CreateAppReq
-	(*CreateAppResp)(nil),              // 3: apppb.CreateAppResp
-	(*CreateAppResp_AppContainer)(nil), // 4: apppb.CreateAppResp.AppContainer
+var file_bridge_pbs_apppb_app_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_bridge_pbs_apppb_app_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_bridge_pbs_apppb_app_proto_goTypes = []interface{}{
+	(RuntimeType)(0), // 0: apppb.RuntimeType
+	(*App)(nil),      // 1: apppb.App
 }
-var file_app_proto_depIdxs = []int32{
-	0, // 0: apppb.App.runtime:type_name -> apppb.App.RuntimeType
-	1, // 1: apppb.CreateAppReq.app:type_name -> apppb.App
-	4, // 2: apppb.CreateAppResp.data:type_name -> apppb.CreateAppResp.AppContainer
-	1, // 3: apppb.CreateAppResp.AppContainer.app:type_name -> apppb.App
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+var file_bridge_pbs_apppb_app_proto_depIdxs = []int32{
+	0, // 0: apppb.App.runtime:type_name -> apppb.RuntimeType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_app_proto_init() }
-func file_app_proto_init() {
-	if File_app_proto != nil {
+func init() { file_bridge_pbs_apppb_app_proto_init() }
+func file_bridge_pbs_apppb_app_proto_init() {
+	if File_bridge_pbs_apppb_app_proto != nil {
 		return
 	}
 	if !protoimpl.UnsafeEnabled {
-		file_app_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
+		file_bridge_pbs_apppb_app_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*App); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_app_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAppReq); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_app_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAppResp); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_app_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAppResp_AppContainer); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -399,19 +198,19 @@ func file_app_proto_init() {
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: file_app_proto_rawDesc,
+			RawDescriptor: file_bridge_pbs_apppb_app_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_app_proto_goTypes,
-		DependencyIndexes: file_app_proto_depIdxs,
-		EnumInfos:         file_app_proto_enumTypes,
-		MessageInfos:      file_app_proto_msgTypes,
+		GoTypes:           file_bridge_pbs_apppb_app_proto_goTypes,
+		DependencyIndexes: file_bridge_pbs_apppb_app_proto_depIdxs,
+		EnumInfos:         file_bridge_pbs_apppb_app_proto_enumTypes,
+		MessageInfos:      file_bridge_pbs_apppb_app_proto_msgTypes,
 	}.Build()
-	File_app_proto = out.File
-	file_app_proto_rawDesc = nil
-	file_app_proto_goTypes = nil
-	file_app_proto_depIdxs = nil
+	File_bridge_pbs_apppb_app_proto = out.File
+	file_bridge_pbs_apppb_app_proto_rawDesc = nil
+	file_bridge_pbs_apppb_app_proto_goTypes = nil
+	file_bridge_pbs_apppb_app_proto_depIdxs = nil
 }

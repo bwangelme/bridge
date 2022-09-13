@@ -2,6 +2,8 @@ package util
 
 import (
 	"bridge/bridge/views/httperr"
+	"encoding/json"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
@@ -9,13 +11,33 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func ReadJsonReq(req proto.Message, c *gin.Context) error {
-	jsonData, err := c.GetRawData()
-	if err != nil {
-		e := errors.WithMessagef(err, "get raw data failed")
-		AbortWithCode(400, e, c)
-		return e
+func ReadJsonReq(req proto.Message, c *gin.Context) (err error) {
+	var jsonData []byte
+
+	if c.Request.Method == http.MethodGet {
+		var res = map[string]string{}
+		for key, _ := range c.Request.URL.Query() {
+			v, ok := c.GetQuery(key)
+			if !ok {
+				continue
+			}
+			res[key] = v
+		}
+		jsonData, err = json.Marshal(res)
+		if err != nil {
+			e := errors.WithMessagef(err, "marshal get form failed")
+			AbortWithCode(400, e, c)
+			return e
+		}
+	} else {
+		jsonData, err = c.GetRawData()
+		if err != nil {
+			e := errors.WithMessagef(err, "get raw data failed")
+			AbortWithCode(400, e, c)
+			return e
+		}
 	}
+
 	err = protojson.Unmarshal(jsonData, req)
 	if err != nil {
 		e := errors.WithMessagef(err, "unmarshal failed")

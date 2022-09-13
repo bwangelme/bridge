@@ -9,10 +9,31 @@ import (
 )
 
 func ListApp(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"error": "",
-		"data":  nil,
-	})
+	req := &apppb.ListAppReq{}
+	err := util.ReadJsonReq(req, c)
+	if err != nil {
+		return
+	}
+
+	appIds, err := appmodel.List(req.Start, req.Limit)
+	if err != nil {
+		util.AbortWith500(err, c)
+		return
+	}
+
+	apps, err := appmodel.GetMulti(appIds)
+	if err != nil {
+		util.AbortWith500(err, c)
+		return
+	}
+
+	resp := &apppb.ListAppResp{
+		Error: "",
+		Data: &apppb.ListAppResp_AppContainer{
+			Apps: appmodel.AppsToPB(apps),
+		},
+	}
+	util.WriteResp(resp, c)
 }
 
 func CreateApp(c *gin.Context) {
@@ -22,7 +43,7 @@ func CreateApp(c *gin.Context) {
 		return
 	}
 
-	app, err := appmodel.AddApp(req.App)
+	app, err := appmodel.Add(req.App)
 	if err != nil {
 		util.AbortWith500(err, c)
 		return

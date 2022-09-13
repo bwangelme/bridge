@@ -6,27 +6,15 @@ package apppb;
 // --go_out=. 指定 go.mod 所在的目录
 option go_package = "bridge/pbs/apppb";
 
+// Note: 修改 RuntimeType 后，必须要一起修改 bridge/model/appmodel/ttypes.go 中 RuntimeType 的定义
+enum RuntimeType {
+  Golang = 0;
+  Python = 1;
+}
+
 message App {
   string name = 1;
 
-  enum RuntimeType {
-    Golang = 0;
-    Python = 1;
-  }
-
   RuntimeType runtime = 2;
   string image = 3;
-}
-
-message CreateAppReq {
-  App app = 1;
-}
-
-message CreateAppResp {
-  message AppContainer {
-    App app = 1;
-  }
-
-  string error = 1;
-  AppContainer data = 2;
 }

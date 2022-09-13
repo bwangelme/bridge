@@ -1,4 +1,4 @@
-package commonview
+package rootview
 
 import (
 	"net/http"

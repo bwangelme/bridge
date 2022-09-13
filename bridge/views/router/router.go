@@ -1,9 +1,8 @@
 package router
 
 import (
-	"bridge/bridge/views/appview"
-	"bridge/bridge/views/commonview"
-	"bridge/bridge/views/router/middleware"
+	"bridge/bridge/views/apiview"
+	"bridge/bridge/views/rootview"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -17,17 +16,9 @@ func Load(middlewares ...gin.HandlerFunc) http.Handler {
 	r.Static("/static", "src/static")
 	r.LoadHTMLGlob("templates/**")
 
-	r.GET("/", commonview.Index)
-	r.GET("/ping", commonview.Ping)
+	rootview.InitRouter(r)
 
-	api := r.Group("/api")
-	api.Use(middleware.NoCache)
-	api.Use(middleware.HandlerHttpErr)
-
-	{
-		api.GET("/app", appview.ListApp)
-		api.POST("/app", appview.CreateApp)
-	}
+	apiview.InitRouter(r)
 
 	return r
 }
