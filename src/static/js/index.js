@@ -14,15 +14,12 @@ const router = createRouter({
 
 const app = createApp({
   template: `<el-container>
-    <el-header style="justify-content: center; display: flex">
-        <h1>Bridge For QAE</h1>
+    <el-header>
+      <el-menu :default-active="$route.name" :router="true" mode="horizontal">
+        <el-menu-item v-for="route in topRoutes" :key="route.name" :index="route.name" :route="{name: route.name}">{{ route.title }}</el-menu-item>
+      </el-menu>
     </el-header>
     <el-container>
-      <el-aside width="200px">
-        <el-menu mode="vertical" :default-active="$route.name" :router="true">
-          <el-menu-item v-for="route in topRoutes" :key="route.name" :index="route.name" :route="{name: route.name}">{{ route.title }}</el-menu-item>
-        </el-menu>
-      </el-aside>
       <el-main>
         <router-view></router-view>
       </el-main>

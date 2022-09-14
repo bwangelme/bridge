@@ -1,4 +1,4 @@
-package util
+package helper
 
 import (
 	"bridge/bridge/views/httperr"

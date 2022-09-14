@@ -17,7 +17,6 @@ func Load(middlewares ...gin.HandlerFunc) http.Handler {
 	r.LoadHTMLGlob("templates/**")
 
 	rootview.InitRouter(r)
-
 	apiview.InitRouter(r)
 
 	return r
