@@ -2,6 +2,7 @@ package apiview
 
 import (
 	"bridge/bridge/views/apiview/appview"
+	"bridge/bridge/views/apiview/deployview"
 	"bridge/bridge/views/router/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -15,4 +16,5 @@ func InitRouter(r gin.IRouter) {
 
 	// init sub router
 	appview.InitRouter(api)
+	deployview.InitRouter(api)
 }
